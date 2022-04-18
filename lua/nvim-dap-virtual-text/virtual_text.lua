@@ -14,6 +14,7 @@ local _, ts_utils = pcall(require, 'nvim-treesitter.ts_utils')
 local _, utils = pcall(require, 'nvim-treesitter.utils')
 local _, parsers = pcall(require, 'nvim-treesitter.parsers')
 local _, queries = pcall(require, 'nvim-treesitter.query')
+local _, ts_query = pcall(require, 'vim.treesitter.query')
 
 local hl_namespace = api.nvim_create_namespace 'nvim-dap-virtual-text'
 local error_set
@@ -90,7 +91,7 @@ function M.set_virtual_text(stackframe, options)
   for _, d in pairs(definition_nodes) do
     local node = utils.get_at_path(d, 'var.node') or utils.get_at_path(d, 'parameter.node')
     if node then
-      local name = ts_utils.get_node_text(node, buf)[1]
+      local name = ts_query.get_node_text(node, buf)
       local var_line, var_col = node:start()
 
       local evaluated = variables[name]
